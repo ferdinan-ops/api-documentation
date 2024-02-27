@@ -1,4 +1,7 @@
 import DashboardLayout from './DashboardLayout'
 import AuthLayout from './AuthLayout'
 
-export { DashboardLayout, AuthLayout }
+import ProtectedAuth from './ProtectedAuth'
+import ProtectedRoute from './ProtectedRoute'
+
+export { DashboardLayout, AuthLayout, ProtectedAuth, ProtectedRoute }

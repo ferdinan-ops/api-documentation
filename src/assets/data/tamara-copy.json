@@ -628,7 +628,8 @@
 								}
 							]
 						}
-					]
+					],
+					"description": "#### Deskripsi\n\nEndpoint ini berguna untuk mencari seluruh daerah yang terdaftar di database berdasarkan ***keyword*** yang diberikan pengguna. Endpoint ini mungkin berguna untuk fitur pencarian cuaca pada daerah lain, dimana nantinya client akan menampilkan seluruh list daerah yang sesuai dengan ***keyword*** yang dimasukkan, lalu memberikan *id* atau ***lat*** dan ***lon*** ke server untuk memberikan detail dari daerah yang ia ***klik*** atau ***tekan.***\n\n#### Headers\n\n*   `Content-Type` : `application/json`"
 				},
 				{
 					"name": "Create New Discussion",

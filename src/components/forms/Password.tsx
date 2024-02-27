@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { useFormContext } from 'react-hook-form'
-import Label from './Label'
-import clsx from 'clsx'
-import Icon from '../atoms/Icon'
 import { HiEye, HiEyeSlash } from 'react-icons/hi2'
+import { useFormContext } from 'react-hook-form'
+import * as React from 'react'
+
+import { Icon, Label } from '@/components'
+import clsx from 'clsx'
 
 interface PasswordProps extends React.ComponentPropsWithRef<'input'> {
   id: string
@@ -18,7 +18,7 @@ export default function Password({ id, label, ...rest }: PasswordProps) {
   const { errors } = formState
 
   return (
-    <div className="flex flex-col gap-1.5 xl:gap-2.5">
+    <div className="flex flex-col gap-1.5 xl:gap-2.5 relative">
       <Label htmlFor={label}>{label}</Label>
       <div className="relative">
         <input
@@ -35,13 +35,15 @@ export default function Password({ id, label, ...rest }: PasswordProps) {
           )}
         />
         <Icon
-          className="absolute right-0 top-1/2 mr-3 h-8 w-8 -translate-y-1/2 text-slate-400 md:mr-4"
+          className="absolute right-0 top-1/2 mr-3 h-8 w-8 -translate-y-1/2 text-slate-400 md:mr-4 text-[17px] xl:text-lg"
           onClick={togglePassword}
         >
-          {showPassword ? <HiEyeSlash className="text-xl" /> : <HiEye className="text-xl" />}
+          {showPassword ? <HiEyeSlash /> : <HiEye />}
         </Icon>
       </div>
-      {errors[id] && <span className="-mt-1 text-xs text-red-400 xl:text-sm">{errors[id]?.message?.toString()}</span>}
+      {errors[id] && (
+        <span className="mt-1 text-xs text-red-400 absolute top-full left-0">{errors[id]?.message?.toString()}</span>
+      )}
     </div>
   )
 }

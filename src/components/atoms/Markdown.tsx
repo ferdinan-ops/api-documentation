@@ -9,6 +9,7 @@ export default function Markdown({ children }: MarkdownProps) {
     <ReactMarkdown
       className="
             prose prose-sm
+            break-words 
             text-font font-medium leading-relaxed
             max-w-none text-[15px]
             prose-headings:text-font prose-headings:font-semibold
@@ -19,9 +20,10 @@ export default function Markdown({ children }: MarkdownProps) {
             lg:prose-h1:text-[24px] lg:prose-h2:text-[18px]
             lg:prose-h3:text-lg lg:prose-h4:text-base
             lg:prose-h5:text-sm
-            lg:prose-h6:text-xs
-            prose-strong:text-font prose-strong:font-bold
-            prose-code:bg-sideBar/90 prose-code:font-mono prose-code:p-1 prose-code:rounded prose-code:text-font"
+            lg:prose-h6:text-xs 
+            lg:prose-code:text-base
+            prose-strong:text-font prose-strong:font-bold prose-strong:text-sm
+            prose-code:bg-sideBar/90 prose-code:font-mono prose-code:p-1 prose-code:rounded prose-code:text-font prose-code:break-words"
     >
       {children}
     </ReactMarkdown>

@@ -1,13 +1,14 @@
-import * as React from 'react'
 import { HiChevronDown, HiOutlineDocumentText } from 'react-icons/hi2'
 import { NavLink, useLocation } from 'react-router-dom'
+import * as React from 'react'
+
+import { ItemType } from '@/utils/types'
 import FolderLink from './FolderLink'
-import { Item } from '../../../utils/types/api.type'
 
 interface ProjectLinkProps {
   path: string
   name: string
-  items: Item[]
+  items: ItemType[]
 }
 
 export default function ProjectLink({ path, name, items }: ProjectLinkProps) {

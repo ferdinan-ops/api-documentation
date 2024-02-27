@@ -1,33 +1,34 @@
 import * as Yup from 'yup'
 
-export const registerInitialValues = {
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
-}
-
 export const registerValidation = Yup.object({
-  username: Yup.string().required('Username harus diisi'),
-  email: Yup.string().required('Email harus diisi').email('Format email tidak valid'),
+  name: Yup.string().required('Name is required'),
+  office: Yup.string().required('Agency is required'),
+  email: Yup.string().required('Email is required').email('Email is not valid'),
   password: Yup.string()
-    .required('Kata sandi harus diisi')
-    .min(8, 'Harus lebih dari 8 karakter')
-    .matches(/[a-z]/g, 'Harus mengandung setidaknya 1 huruf kecil')
-    .matches(/[A-Z]/g, 'Harus mengandung setidaknya 1 huruf besar')
-    .matches(/[0-9]/g, 'Harus mengandung setidaknya 1 angka')
-    .matches(/^\S*$/g, 'Tidak boleh mengandung spasi'),
-  confirmPassword: Yup.string()
-    .required('Konfirmasi kata sandi harus diisi')
-    .oneOf([Yup.ref('password')], 'Kata sandi harus cocok')
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters')
+    .matches(/[a-z]/g, 'Password must contain lowercase letters')
+    .matches(/[A-Z]/g, 'Password must contain uppercase letters')
+    .matches(/[0-9]/g, 'Password must contain numbers')
+    .matches(/^\S*$/g, 'Password must not contain spaces')
+    .matches(/[^a-zA-Z0-9]/g, 'Passwords must contain special characters'),
+  password_confirmation: Yup.string()
+    .required('Confirmation password is required')
+    .oneOf([Yup.ref('password')], 'Confirmation password does not match')
 })
-
-export const loginInitialValues = {
-  email: '',
-  password: ''
-}
 
 export const loginValidation = Yup.object({
-  email: Yup.string().required('Email harus diisi').email('Format email tidak valid'),
-  password: Yup.string().required('Kata sandi harus diisi')
+  email: Yup.string().required('Email is required').email('Email is not valid'),
+  password: Yup.string().required('Password is required')
 })
+
+export const verifyValidation = Yup.object({
+  verification_code: Yup.string()
+    .required('Verification code is required')
+    .max(6, 'Verification code must be 6 characters')
+    .min(6, 'Verification code must be 6 characters')
+})
+
+export type RegisterInput = Yup.InferType<typeof registerValidation>
+export type LoginInput = Yup.InferType<typeof loginValidation>
+export type VerifyInput = Yup.InferType<typeof verifyValidation>

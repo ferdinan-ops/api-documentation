@@ -1,16 +1,12 @@
 import * as React from 'react'
 
-interface Props {
-  ref: React.RefObject<HTMLElement>
-}
-
-export default function useOutsideClick({ ref }: Props) {
-  const [isClick, setIsClick] = React.useState(false)
+const useOutsideClick = (callback: () => void) => {
+  const ref = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        setIsClick(true)
+        callback()
       }
     }
 
@@ -19,7 +15,9 @@ export default function useOutsideClick({ ref }: Props) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [ref])
+  }, [callback])
 
-  return isClick
+  return ref
 }
+
+export default useOutsideClick

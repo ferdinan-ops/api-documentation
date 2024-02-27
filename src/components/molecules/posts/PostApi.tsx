@@ -1,32 +1,31 @@
+import { HiCheck, HiOutlineClipboard } from 'react-icons/hi2'
 import clipboardCopy from 'clipboard-copy'
 import * as React from 'react'
 import Prism from 'prismjs'
 
-import { Code, Markdown, MethodLabel, RequestBox, RequestItem, Section } from '../..'
-import { Auth, IBody, Response, Url } from '../../../utils/types/api.type'
-import { HiCheck, HiOutlineClipboard } from 'react-icons/hi2'
+import { Code, Markdown, MethodLabel, RequestBox, RequestItem, Section, Icon } from '@/components'
+import { RequestType, ResponseType } from '@/utils/types'
+import { generateCode } from '@/utils/lib/httpSnippet'
+import { useCode } from '@/store/client'
 
-import '../../../prism-laserwave.css'
-import Icon from '../../atoms/Icon'
+import '@/utils/styles/prism-laserwave.css'
 
 interface PostApiProps {
-  name: string
-  method?: string
-  description?: string
-  url: Url
-  body?: IBody
-  response: Response[]
-  auth?: Auth
   id: string
+  name: string
+  response: ResponseType[]
+  request: RequestType
 }
 
-export default function PostApi({ name, method, description, url, body, response, auth, id }: PostApiProps) {
-  const { raw } = url
+export default function PostApi({ name, response, request, id }: PostApiProps) {
+  const { url, auth, body, description, method } = request
+
+  const code = useCode((state) => state.code)
   const [isCopied, setIsCopied] = React.useState(false)
 
   React.useEffect(() => {
     Prism.highlightAll()
-  }, [])
+  }, [code])
 
   const handleCopy = (url: string) => {
     clipboardCopy(url).then(() => {
@@ -45,8 +44,11 @@ export default function PostApi({ name, method, description, url, body, response
           <h3 className="text-lg font-bold text-primary truncate max-w-full">{name}</h3>
         </div>
         <div className="w-full px-4 py-3 bg-dark rounded-md flex items-center justify-between relative">
-          <p className="font-mono text-white font-medium text-sm break-words max-w-full">{raw}</p>
-          <Icon className="w-7 h-7 bg-white/5 hover:bg-white/10 absolute top-2 right-2" onClick={() => handleCopy(raw)}>
+          <p className="font-mono text-white font-medium text-sm break-words max-w-full">{url.raw}</p>
+          <Icon
+            className="w-7 h-7 bg-white/5 hover:bg-white/10 absolute top-2 right-2 z-0"
+            onClick={() => handleCopy(url.raw)}
+          >
             {isCopied ? <HiCheck className="text-green-400" /> : <HiOutlineClipboard className="text-white" />}
           </Icon>
         </div>
@@ -88,7 +90,15 @@ export default function PostApi({ name, method, description, url, body, response
         ) : null}
       </Section>
 
-      <Section variant="right" className={response.length > 0 ? '' : 'hidden xl:grid'}>
+      <Section variant="right">
+        <div className="flex flex-col gap-1 xl:gap-3 mb-5">
+          <h4 className="text-sm xl:text-[17px] font-bold text-white flex justify-between items-center">
+            <span>Example Request</span>
+            <RoundedText>{code.toUpperCase()}</RoundedText>
+          </h4>
+          <Code raw={generateCode({ languages: code, ...request })} />
+        </div>
+
         {response.length > 0 ? (
           <div className="flex flex-col gap-1 xl:gap-3">
             <h4 className="text-sm xl:text-[17px] font-bold text-white">Example Response</h4>
@@ -97,9 +107,9 @@ export default function PostApi({ name, method, description, url, body, response
                 <div className="flex flex-col gap-3 xl:gap-5" key={index}>
                   <div className="flex items-center justify-between">
                     <h3 className="text-font-dark font-semibold xl:text-base text-sm">{res.name}</h3>
-                    <span className="px-2 py-1 border border-font-dark text-font-dark text-[10px] xl:text-xs rounded font-semibold">
+                    <RoundedText>
                       {res.code} {res.status}
-                    </span>
+                    </RoundedText>
                   </div>
                   <Code raw={res.body} />
                 </div>
@@ -109,5 +119,13 @@ export default function PostApi({ name, method, description, url, body, response
         ) : null}
       </Section>
     </article>
+  )
+}
+
+const RoundedText = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <span className="px-2 xl:py-1 border border-font-dark text-font-dark text-[10px] xl:text-xs rounded font-semibold capitalize">
+      {children}
+    </span>
   )
 }
